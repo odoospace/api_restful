@@ -1,22 +1,65 @@
 <openerp>
     <data>
-        <!-- <template id="listing"> -->
-        <!--   <ul> -->
-        <!--     <li t-foreach="objects" t-as="object"> -->
-        <!--       <a t-attf-href="#{ root }/objects/#{ object.id }"> -->
-        <!--         <t t-esc="object.display_name"/> -->
-        <!--       </a> -->
-        <!--     </li> -->
-        <!--   </ul> -->
-        <!-- </template> -->
-        <!-- <template id="object"> -->
-        <!--   <h1><t t-esc="object.display_name"/></h1> -->
-        <!--   <dl> -->
-        <!--     <t t-foreach="object._fields" t-as="field"> -->
-        <!--       <dt><t t-esc="field"/></dt> -->
-        <!--       <dd><t t-esc="object[field]"/></dd> -->
-        <!--     </t> -->
-        <!--   </dl> -->
-        <!-- </template> -->
+        <!-- BEGIN apirest.token -->
+        <record model="ir.ui.view" id="token_form_view">
+            <field name="name">token.form</field>
+            <field name="model">apirest.token</field>
+            <field name="arch" type="xml">
+                <form string="Token Form">
+                    <sheet>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="app_id"/>
+                            <field name="token"/>
+                            <field name="active"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- END apirest.token -->
+
+        <!-- BEGIN apirest.app -->
+        <record model="ir.ui.view" id="app_form_view">
+            <field name="name">app.form</field>
+            <field name="model">apirest.app</field>
+            <field name="arch" type="xml">
+                <form string="App Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="active"/>
+                            <field name="token_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_list_apirest_tokens">
+            <field name="name">Tokens</field>
+            <field name="res_model">apirest.token</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create the first token</p>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_list_apirest_apps">
+            <field name="name">Apps</field>
+            <field name="res_model">apirest.app</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create the first app</p>
+            </field>
+        </record>
+
+        <menuitem id="menu_apirest" parent="base.menu_custom" name="API RESTful"/>
+        <menuitem id="menu_apirestful_app" parent="menu_apirest" name="Apps" sequence="10"
+                action="action_list_apirest_apps"/>
+        <menuitem id="menu_apirest_token" parent="menu_apirest" name="Tokens" sequence="20"
+                action="action_list_apirest_tokens"/>
+        
     </data>
 </openerp>

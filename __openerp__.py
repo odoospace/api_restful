@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Api Restful",
+    'name': "API RESTful",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        API RESTful""",
 
     'description': """
-        Long description of module's purpose
+        Simple and secure API RESTful for Odoo
     """,
 
     'author': "Impulzia",
