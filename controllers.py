@@ -41,14 +41,16 @@ class ApiRestful(http.Controller):
             res = json.dumps(data)
         return res
 
-    @http.route('/api/<model>/<id>', type='http', auth='public', cors='*')
-    def search_by_id(self, model, id,  token, offset=0, limit=None, fields='',):
+    @http.route('/api/<model>/<field>/<op>/<value>', type='http', auth='public', cors='*')
+    def search_by_field(self, model, field, op, value, token, offset=0, limit=None, fields='',):
+        """ ex: /api/model/res.partner/name/=/john"""
+        # TODO: use a json in searchs 
         token = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
         res = {}
         if token:
             model = http.request.env[model]
             data = model.sudo(token.user_id).search_read(
-                [('id', '=', id)],
+                [(field, op, value)],
                 fields=fields.split(','),
                 offset = offset and int(offset) or 0,
                 limit = limit and int(limit) or None
