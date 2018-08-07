@@ -21,37 +21,65 @@ class ApiRestful(http.Controller):
         return json.dumps({ 'token': token.token })
     """
 
-    @http.route('/api/<model>', type='http', auth='public', cors='*')
-    def search(self, model, token, offset=0, limit=None, fields='id', sort='id'):
-        print model, token, fields
-        token = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
-        res = {}
-        if token:
+    @http.route('/api/search/<model>', type='json', auth='public', methods=['POST'], cors='*', csrf=False)
+    def search(self, model, **kwargs):
+        """
+        {
+            'token': xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 
+            'condition': [{ 'id', '=', 25}, {'date', '>=', '2017/05/21'}],
+            'fields': ['id', 'name']
+        }
+        """
+
+        token = kwargs['token']
+        condition = kwargs.get('condition', [])
+        fields = kwargs['fields']
+        offset = kwargs.get('offset', 0)
+        limit = kwargs.get('limit', None)
+        sort = kwargs.get('sort', 'id')
+
+        t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
+        payload = {}
+        if t: 
             # magic
             """
-            reg = registry(token.app_id.dbname)
+            reg = registry(t.app_id.dbname)
             model = http.request.env[model]
             """
             model = http.request.env[model]
-            data = model.sudo(token.user_id).search_read(
-                fields = fields.split(','),
+            res = model.sudo(t.user_id).search_read(
+                condition,
+                fields = fields,
                 offset = offset and int(offset) or 0,
                 limit = limit and int(limit) or None
             )
-            res = json.dumps(data)
-        return res
+            payload = json.dumps(res)
+        return payload
 
-    @http.route('/api/<model>/<id>', type='http', auth='public', cors='*')
-    def search_by_id(self, model, id,  token, offset=0, limit=None, fields='',):
-        token = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
-        res = {}
-        if token:
+
+    @http.route('/api/update/<model>/<id>', type='json', auth='public', methods=['POST'], cors='*', csrf=False)
+    def update(self, model, id, **kwargs):
+        """
+        {
+            'token': xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 
+            'data': {'name': 'newname'}
+        }
+        """
+
+        token = kwargs['token']
+        data = kwargs['data']
+
+        print token, data
+
+        t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
+        payload = {}
+        if t: 
+            # magic
+            """
+            reg = registry(t.app_id.dbname)
             model = http.request.env[model]
-            data = model.sudo(token.user_id).search_read(
-                [('id', '=', id)],
-                fields=fields.split(','),
-                offset = offset and int(offset) or 0,
-                limit = limit and int(limit) or None
-            )
-            res = json.dumps(data[0])
-        return res
+            """
+            model = http.request.env[model]
+            res = model.sudo(t.user_id).search([('id', '=', id)]).write(data)
+            payload = json.dumps(res)
+        return payload
