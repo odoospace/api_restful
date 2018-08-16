@@ -134,7 +134,7 @@ class ApiRestful(http.Controller):
         return payload
 
     @http.route('/api/delete/<model>/<id>', type='json', auth='public', methods=['POST'], cors='*', csrf=False)
-    def execute(self, model, id, **kwargs):
+    def unlink(self, model, id, **kwargs):
         """
         {
             'token': xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 
