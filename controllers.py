@@ -153,7 +153,7 @@ class ApiRestful(http.Controller):
             model = http.request.env[model]
             """
             model = http.request.env[model]
-            res = model.sudo(t.user_id).search([('id', '=', id)]).unlink()
+            res = model.sudo(t.user_id).search([('id', '=', id)])[0].unlink()
             if res:
                 payload = json.dumps(res)
         return payload
