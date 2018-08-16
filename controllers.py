@@ -69,8 +69,6 @@ class ApiRestful(http.Controller):
         token = kwargs['token']
         data = kwargs['data']
 
-        print token, data
-
         t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
         payload = {}
         if t: 
@@ -81,5 +79,30 @@ class ApiRestful(http.Controller):
             """
             model = http.request.env[model]
             res = model.sudo(t.user_id).search([('id', '=', id)]).write(data)
+            payload = json.dumps(res)
+        return payload
+
+    @http.route('/api/create/<model>', type='json', auth='public', methods=['POST'], cors='*', csrf=False)
+    def create(self, model, **kwargs):
+        """
+        {
+            'token': xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 
+            'data': {'name': 'newname'}
+        }
+        """
+
+        token = kwargs['token']
+        data = kwargs['data']
+
+        t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
+        payload = {}
+        if t: 
+            # magic
+            """
+            reg = registry(t.app_id.dbname)
+            model = http.request.env[model]
+            """
+            model = http.request.env[model]
+            res = model.sudo(t.user_id).create(data)
             payload = json.dumps(res)
         return payload
