@@ -116,9 +116,8 @@ class ApiRestful(http.Controller):
             'data': {'name': 'newname'}
         }
         """
-
+        
         token = kwargs['token']
-        data = kwargs['data']
 
         t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
         payload = {}
