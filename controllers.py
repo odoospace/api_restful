@@ -116,7 +116,7 @@ class ApiRestful(http.Controller):
             'data': {'name': 'newname'}
         }
         """
-        
+
         token = kwargs['token']
 
         t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
@@ -128,7 +128,7 @@ class ApiRestful(http.Controller):
             model = http.request.env[model]
             """
             model = http.request.env[model]
-            res = getattr(model.sudo(t.user_id).search([('id', '=', id)][0]), function)() 
+            res = getattr(model.sudo(t.user_id).search([('id', '=', id)])[0], function)() 
             if res:
                 payload = json.dumps(res)
         return payload
