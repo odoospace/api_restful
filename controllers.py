@@ -107,3 +107,29 @@ class ApiRestful(http.Controller):
             if res:
                 payload = json.dumps(res.id)
         return payload
+
+    @http.route('/api/execute/<model>/<id>/<function>', type='json', auth='public', methods=['POST'], cors='*', csrf=False)
+    def execute(self, model, id, function, **kwargs):
+        """
+        {
+            'token': xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 
+            'data': {'name': 'newname'}
+        }
+        """
+
+        token = kwargs['token']
+        data = kwargs['data']
+
+        t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
+        payload = {}
+        if t: 
+            # magic
+            """
+            reg = registry(t.app_id.dbname)
+            model = http.request.env[model]
+            """
+            model = http.request.env[model]
+            res = getattr(model.sudo(t.user_id).search([('id', '=', id)][0]), function)() 
+            if res:
+                payload = json.dumps(res)
+        return payload
