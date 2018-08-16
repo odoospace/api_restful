@@ -104,5 +104,6 @@ class ApiRestful(http.Controller):
             """
             model = http.request.env[model]
             res = model.sudo(t.user_id).create(data)
-            payload = json.dumps(res)
+            if res:
+                payload = json.dumps(res.id)
         return payload
