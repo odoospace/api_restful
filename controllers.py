@@ -134,3 +134,28 @@ class ApiRestful(http.Controller):
             if res:
                 payload = json.dumps(res)
         return payload
+
+    @http.route('/api/delete/<model>/<id>', type='json', auth='public', methods=['POST'], cors='*', csrf=False)
+    def execute(self, model, id, **kwargs):
+        """
+        {
+            'token': xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 
+            'data': {'name': 'newname'}
+        }
+        """
+
+        token = kwargs['token']
+
+        t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
+        payload = {}
+        if t: 
+            # magic
+            """
+            reg = registry(t.app_id.dbname)
+            model = http.request.env[model]
+            """
+            model = http.request.env[model]
+            res = model.sudo(t.user_id).search([('id', '=', id)]).unlink()
+            if res:
+                payload = json.dumps(res)
+        return payload
