@@ -37,6 +37,7 @@ class ApiRestful(http.Controller):
         offset = kwargs.get('offset', 0)
         limit = kwargs.get('limit', None)
         sort = kwargs.get('sort', 'id')
+        context = kwargs.get('context', {})
 
         t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
         payload = {}
@@ -47,7 +48,7 @@ class ApiRestful(http.Controller):
             model = http.request.env[model]
             """
             model = http.request.env[model]
-            res = model.sudo(t.user_id).search_read(
+            res = model.sudo(t.user_id).with_context(**context).search_read(
                 condition,
                 fields = fields,
                 offset = offset and int(offset) or 0,
@@ -136,7 +137,7 @@ class ApiRestful(http.Controller):
         return payload
 
     @http.route('/api/delete/<model>/<id>', type='json', auth='public', methods=['POST'], cors='*', csrf=False)
-    def execute(self, model, id, **kwargs):
+    def delete(self, model, id, **kwargs):
         """
         {
             'token': xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 
