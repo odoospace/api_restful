@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from openerp import http, registry
+from odoo import http, registry
 import json
 
 class ApiRestful(http.Controller):
