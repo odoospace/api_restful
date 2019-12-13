@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import http, registry
+from odoo import http
 import json
 
 class ApiRestful(http.Controller):
@@ -43,10 +43,6 @@ class ApiRestful(http.Controller):
         payload = {}
         if t: 
             # magic
-            """
-            reg = registry(t.app_id.dbname)
-            model = http.request.env[model]
-            """
             model = http.request.env[model]
             res = model.sudo(t.user_id).with_context(**context).search_read(
                 condition,
@@ -70,16 +66,11 @@ class ApiRestful(http.Controller):
         token = kwargs['token']
         data = kwargs['data']
 
-        print token, data
-
         t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
         payload = {}
         if t: 
             # magic
-            """
-            reg = registry(t.app_id.dbname)
-            model = http.request.env[model]
-            """
+
             model = http.request.env[model]
             res = model.sudo(t.user_id).search([('id', '=', id)]).write(data)
             payload = json.dumps(res)
@@ -101,10 +92,6 @@ class ApiRestful(http.Controller):
         payload = {}
         if t: 
             # magic
-            """
-            reg = registry(t.app_id.dbname)
-            model = http.request.env[model]
-            """
             model = http.request.env[model]
             res = model.sudo(t.user_id).create(data)
             if res:
@@ -126,10 +113,6 @@ class ApiRestful(http.Controller):
         payload = {}
         if t: 
             # magic
-            """
-            reg = registry(t.app_id.dbname)
-            model = http.request.env[model]
-            """
             model = http.request.env[model]
             res = getattr(model.sudo(t.user_id).search([('id', '=', id)])[0], function)() 
             if res:
@@ -151,10 +134,6 @@ class ApiRestful(http.Controller):
         payload = {}
         if t: 
             # magic
-            """
-            reg = registry(t.app_id.dbname)
-            model = http.request.env[model]
-            """
             model = http.request.env[model]
             res = model.sudo(t.user_id).search([('id', '=', id)]).unlink()
             if res:
