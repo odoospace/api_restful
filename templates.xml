@@ -1,4 +1,4 @@
-<openerp>
+<odoo>
     <data>
         <!-- BEGIN apirest.token -->
         <record model="ir.ui.view" id="token_form_view">
@@ -59,7 +59,6 @@
         <menuitem id="menu_apirestful_app" parent="menu_apirest" name="Apps" sequence="10"
                 action="action_list_apirest_apps"/>
         <menuitem id="menu_apirest_token" parent="menu_apirest" name="Tokens" sequence="20"
-                action="action_list_apirest_tokens"/>
-        
+                action="action_list_apirest_tokens"/> 
     </data>
-</openerp>
+</odoo>
