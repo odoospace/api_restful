@@ -55,7 +55,7 @@
             </field>
         </record>
 
-        <menuitem id="menu_apirest" parent="base.menu_custom" name="API RESTful"/>
+        <menuitem id="menu_apirest" parent="base.menu_custom" name="API RESTful" sequence="40"/>
         <menuitem id="menu_apirestful_app" parent="menu_apirest" name="Apps" sequence="10"
                 action="action_list_apirest_apps"/>
         <menuitem id="menu_apirest_token" parent="menu_apirest" name="Tokens" sequence="20"
