@@ -9,8 +9,8 @@
         Simple and secure API RESTful for Odoo
     """,
 
-    'author': "Impulzia",
-    'website': "http://www.impulzia.com",
+    'author': "Impulso Diagonal",
+    'website': "http://www.impulso.xyz",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
