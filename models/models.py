@@ -5,6 +5,8 @@ import uuid
 
 class token(models.Model):
     _name = 'apirest.token'
+    _description = 'Api rest token'
+
 
     def _get_uuid(self):
         return uuid.uuid4()
@@ -20,6 +22,7 @@ class token(models.Model):
 
 class app(models.Model):
     _name = 'apirest.app'
+    _description = 'Api rest app'
 
     def _get_dbname(self):
         return self.env.cr.dbname
