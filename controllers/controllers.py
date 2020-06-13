@@ -139,3 +139,28 @@ class ApiRestful(http.Controller):
             if res:
                 payload = json.dumps(res)
         return payload
+
+    @http.route('/api/sql/<name>', type='json', auth='public', methods=['POST'], cors='*', csrf=False)
+    def sql(self, name,  **kwargs):
+        """
+        {
+            'token': xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 
+            'params': {'sku': 'sku'}
+        }
+        """
+
+        token = kwargs['token']
+        params = kwargs['params']
+
+        # TODO: function to check tokens
+        t = http.request.env['apirest.token'].sudo().search([('token', '=', token)])
+        payload = {}
+        if t:
+            sql = http.request.env['apirest.sql'].sudo().search([('name', '=', name), ('app_id', '=', t.app_id)]).unlink()
+
+            query = sql.query #% [i for i params.values()] 
+            http.request.cr.execute(query, params) # use %(param)s query to safe calls
+            res = request.cr.fetchall() 
+            if res:
+                payload = json.dumps(res)
+        return payload

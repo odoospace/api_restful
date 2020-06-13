@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_api_restful_api_restful,api_restful.api_restful,model_api_restful_api_restful,,1,0,0,0
+access_apirest_token,api_restful.apirest,model_apirest_app,,1,1,1,1
+access_apirest_app,api_restful.apirest,model_apirest_token,,1,1,1,1
+access_apirest_sql,api_restful.apirest,model_apirest_sql,,1,1,1,1

@@ -21,6 +21,7 @@ class token(models.Model):
 
 
 class app(models.Model):
+    """Define apps to use apirest"""
     _name = 'apirest.app'
     _description = 'Api rest app'
 
@@ -37,6 +38,20 @@ class app(models.Model):
     # white lists (comma separated)
     whitelist_domains = fields.Char(string='Domains whitelist')
     whitelist_ips = fields.Char(string='IPs whitelist')
+    # sql
+    sql_ids = fields.One2many('apirest.sql', 'app_id')
+
+
+class sql(models.Model):
+    """define raw sql queries"""
+    _name = 'apirest.sql'
+    _description = 'SQL queries'
+
+    name = fields.Char()
+    description = fields.Char()
+    active = fields.Boolean(default=True)
+    query = fields.Char()
+    app_id = fields.Many2one('apirest.app')
 
 
 class res_users(models.Model):
@@ -44,5 +59,3 @@ class res_users(models.Model):
     _inherit = 'res.users'
 
     token_ids = fields.One2many('apirest.token', 'user_id')
-
-
