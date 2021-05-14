@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 import json
+import datetime
 
 class ApiRestful(http.Controller):
     """
@@ -30,6 +31,11 @@ class ApiRestful(http.Controller):
             'fields': ['id', 'name']
         }
         """
+        def myconverter(o):
+            if isinstance(o, datetime.datetime):
+                return o.__str__()
+            if isinstance(o, datetime.date):
+                return o.__str__()
 
         token = kwargs['token']
         condition = kwargs.get('condition', [])
@@ -50,7 +56,7 @@ class ApiRestful(http.Controller):
                 offset = offset and int(offset) or 0,
                 limit = limit and int(limit) or None
             )
-            payload = json.dumps(res)
+            payload = json.dumps(res, default=myconverter)
         return payload
 
 
