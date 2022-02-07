@@ -16,7 +16,7 @@
     # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
     # for the full list
     'category': 'api',
-    'version': '12.0.0.3',
+    'version': '14.0.0.3',
 
     # any module necessary for this one to work correctly
     'depends': ['base'],
@@ -24,7 +24,7 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'templates.xml',
+        'views/templates.xml',
     ],
     # only loaded in demonstration mode
     #'demo': [
